@@ -15,9 +15,10 @@ export default {
 	}, 
 	created()  {
 		var context = uni.createCanvasContext('firstCanvas')
-		
+			context.drawImage('http://pic.bizhi360.com/bbpic/51/10551.jpg')
+							
 		//背景填充
-		this.fillRoundRect(context, 0, 0, 500, 300, 0, 'rgba(44, 225, 12, 0.7)');
+		// this.fillRoundRect(context, 0, 0, 500, 300, 0, 'rgba(44, 225, 12, 0.7)');
 		//时间框绘制
 		this.strokeRoundRect(context, 130, 10, 60,20, 5,1,"#8b8b8b");
 		//投稿气泡绘制
