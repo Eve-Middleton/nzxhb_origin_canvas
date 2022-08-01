@@ -16,9 +16,13 @@ export default {
 	created()  {
 		var context = uni.createCanvasContext('firstCanvas')
 		
+		//背景填充
 		this.fillRoundRect(context, 0, 0, 500, 300, 0, 'rgba(44, 225, 12, 0.7)');
+		//时间框绘制
 		this.strokeRoundRect(context, 130, 10, 60,20, 5,1,"#8b8b8b");
+		//投稿气泡绘制
 		this.strokeRoundRect(context, 50, 50, 300,100, 5,1,"#8b8b8b");
+		//小黑板气泡绘制
 		this.strokeRoundRect(context, 300, 200, 50,50, 5,1,"#8b8b8b");
 		context.draw();
 	},
@@ -26,8 +30,8 @@ export default {
 		ToImg(){
 			var urls=[];
 			uni.canvasToTempFilePath({
-			  // x: 100,
-			  // y: 200,
+			  // x: 100,起始点
+			  // y: 200,结束点
 			 width:500,
 			 height:300,
 			 destWidth: 1000,
