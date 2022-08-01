@@ -1,0 +1,1 @@
+<view><button data-event-opts="{{[['tap',[['ToImg',['$event']]]]]}}" bindtap="__e">生成图片</button><canvas style="width:500px;height:300px;" canvas-id="firstCanvas" id="firstCanvas"></canvas></view>
