@@ -1,1 +1,1 @@
-<view><button data-event-opts="{{[['tap',[['ToImg',['$event']]]]]}}" bindtap="__e">生成图片</button><canvas style="width:500px;height:300px;" canvas-id="firstCanvas" id="firstCanvas"></canvas></view>
+<view><button data-event-opts="{{[['tap',[['BeginDraw',['$event']]]]]}}" bindtap="__e">绘制图片</button><button data-event-opts="{{[['tap',[['ToImg',['$event']]]]]}}" bindtap="__e">生成图片</button><canvas class="vue-ref" style="{{$root.s0}}" canvas-id="firstCanvas" id="firstCanvas" data-ref="firstCanvas"></canvas></view>
