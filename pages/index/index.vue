@@ -11,26 +11,92 @@
 export default {
 	data () {
 	      return {
+			  //画布实际尺寸
 			  firstCanvas:{
-			   width: '500px',
-			   'min-height': '500px',
-			  	  height: '500px'
-		  },
-			  //画布高度
-			DrawHeight:'',
-			txt:'',
-			result:{}
+			  'width': '500px',
+			  'minHeight': '500px'
+			},
+			backgroundData:{
+				frameTopLeftX:0,
+				frameTopLeftY:0,
+				frameWidth:500,
+				frameHeight:280,
+				xhbImgSrc:"../../static/bjt.jpg"
+			},
+				//时间
+				timeData:{
+					frameTopLeftX:195,
+					frameTopLeftY:42,
+					frameWidth:110,
+					frameHeight:20,
+					contentTopLeftX:203, 
+					contentTopLeftY:58,
+					contentTxt:'2022-8-2 11:43',
+					fontColor:"",
+					radius:5 ,//圆角
+					fontSizeAndStyle:"13px Microsoft Yahei",
+					fillColor:'rgb(215,215,215)'
+				},
+				//投稿
+				submitData:{
+					frameTopLeftX:20,
+					frameTopLeftY:105,
+					frameWidth:389,
+					frameHeight:'',
+					computeDrawHeight:'',
+					contentTopLeftX:33,
+					contentTopLeftY:117,
+					txt:'',
+					fontSizeAndStyle:"20px Microsoft Yahei",
+					result:{},
+					radius:10,//圆角
+					fontColor:"#333333",
+					fillColor:'rgba(230,230,230,0.7)'
+				},
+				//类型
+				categoryData:{
+					frameTopLeftX:'20',
+					frameTopLeftY:'80',
+					frameWidth:'50',
+					frameHeight:'20',
+					contentTopLeftX:'30',
+					contentTopLeftY:'95',
+					contentTxt:'提问',
+					radius:5 ,//圆角
+					fontSizeAndStyle:"15px Microsoft Yahei",
+					fontColor:"#FFFFFF",
+					fillColor:'rgb(112,182,3)'
+					
+				},
+				//回复气泡
+				respondData:{
+					frameTopLeftX:'',
+					frameTopLeftY:'',
+					frameWidth:'',
+					frameHeight:'',
+					contentTopLeftX:'',
+					contentTopLeftY:'',
+				},
+				headshotData:{
+					frameCenterX:'',
+					frameCenterY:'',
+					frameR:'',
+					xhbUrl:'',
+					bbbUrl:''
+				}
+
+			
 		}
 	}, 
 	onReady() {
 		//var context = uni.createCanvasContext('firstCanvas')
 	},
 	created()  {
-		this.txt="小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小黑板小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小你好小黑板你好";
+		this.submitData.txt="小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小黑板小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小小黑板你好小黑板你好小黑板你好小黑板你好小黑板你好小你好小黑板你好";
 		//var txt="小黑板你好";
-		this.result = this.text(this.txt)
-		this.DrawHeight=500+this.result.rows*30
-		this.firstCanvas.height=700
+		this.submitData.result = this.text(this.submitData.txt)
+		this.submitData.DrawHeight=500-30+this.submitData.result.rows*30
+		this.firstCanvas.minHeight=this.submitData.DrawHeight+"px"
 		// var context = uni.createCanvasContext('firstCanvas')
 		// uni.getImageInfo({
 		// 	src:"https://s1.328888.xyz/2022/08/02/Oht1K.jpg",
@@ -104,55 +170,57 @@ export default {
 			// 		console.log("base64",this.popupImgBase64)
 			// 	}
 			// })
-			// context.drawImage(this.popupImgBase64,0,0,250,140);
-			context.drawImage("../../static/bjt.jpg",0,0,500,280);
-			context.save();
-			context.drawImage("../../static/bjt.jpg",0,280,500,280);
-			context.save();
+			
+			//根据画布高度遍历背景图片
+			let tempBgH=this.backgroundData.frameTopLeftY;
+			for (var i = 0; i < Math.ceil(parseInt(this.firstCanvas.minHeight)/this.backgroundData.frameHeight); i++) {
+				context.drawImage(this.backgroundData.xhbImgSrc,this.backgroundData.frameTopLeftX,tempBgH,this.backgroundData.frameWidth,this.backgroundData.frameHeight);
+				context.save();
+				tempBgH+=this.backgroundData.frameHeight;
+			}
 			
 			//时间框绘制
-					this.fillRoundRect(context, 195, 42, 110,20, 5,"rgb(215,215,215)");
+					this.fillRoundRect(context, this.timeData.frameTopLeftX, this.timeData.frameTopLeftY, this.timeData.frameWidth,this.timeData.frameHeight, this.timeData.radius,this.timeData.fillColor);
 					//绘制时间
-					 context.font="13px Microsoft Yahei";
-					context.fillText("2022-8-1 10:00",203,58);
+					 context.font=this.timeData.fontSizeAndStyle;
+					context.fillText(this.timeData.contentTxt,this.timeData.contentTopLeftX,this.timeData.contentTopLeftY);
 					
 					//类型绘制
-					 context.font="15px Microsoft Yahei";
-					this.fillRoundRect(context,20,80,50,20,5,"rgb(112,182,3)");
+					 context.font=this.categoryData.fontSizeAndStyle;
+					this.fillRoundRect(context,this.categoryData.frameTopLeftX,this.categoryData.frameTopLeftY,this.categoryData.frameWidth,this.categoryData.frameHeight,this.categoryData.radius,this.categoryData.fillColor);
 					//绘制类别文字
-					context.fillStyle="#FFFFFF";
-					context.fillText("提问",30,95);
+					context.fillStyle=this.categoryData.fontColor;
+					context.fillText(this.categoryData.contentTxt,this.categoryData.contentTopLeftX,this.categoryData.contentTopLeftY);
+					
+					
+					//投稿绘制
 					context.font="20px Microsoft Yahei";
 					//投稿内容
 					
-					
-					// let result = this.text(txt)
-					// this.DrawHeight=500+result.rows*30
-					
 					//投稿气泡绘制
 					//如果文字占一行，则根据文字长短调整气泡x轴
-					let resWitch=389;
-					if(this.result.rows==1){
-						resWitch=this.result.strLength*this.result.fontSize+30;
+					let resWitch=this.submitData.frameWidth;
+					if(this.submitData.result.rows==1){
+						resWitch=this.submitData.result.strLength*this.submitData.result.fontSize+30;
 						
 					}
 					//根据文字行数确定气泡的高 35为单行高度
 					
-					this.fillRoundRect(context, 20, 105, resWitch,this.result.rows*30+25, 10,'rgba(230,230,230,0.7)');
+					this.fillRoundRect(context, this.submitData.frameTopLeftX, this.submitData.frameTopLeftY, resWitch,this.submitData.result.rows*30+25, this.submitData.radius,this.submitData.fillColor);
 					//绘制投稿内容
-					 context.font="20px Microsoft Yahei";
-					 context.fillStyle="#333333";
-					for (let i = 0; i <= this.result.rows; i++) {
+					 context.font=this.submitData.fontSizeAndStyle;
+					 context.fillStyle=this.submitData.fontColor;
+					for (let i = 0; i <= this.submitData.result.rows; i++) {
 					//35为文字x方向起始位置，115为文字y轴起始方向，23为每增加一行，y轴下移23px
-					 context.fillText(this.txt.slice(this.result.rowFontNum*(i-1),this.result.rowFontNum*i),33,117+i*26)
+					 context.fillText(this.submitData.txt.slice(this.submitData.result.rowFontNum*(i-1),this.submitData.result.rowFontNum*i),this.submitData.contentTopLeftX,this.submitData.contentTopLeftY+i*26)
 					}
 					context.save();
 					//小黑板气泡绘制
-					this.fillRoundRect(context, 322, 270+this.result.rows*30, 110,60, 10,'rgb(0,153,255)');
+					this.fillRoundRect(context, 322, 270+this.submitData.result.rows*30, 110,60, 10,'rgb(0,153,255)');
 					context.fillStyle="#FFFFFF";
-					context.fillText("板板收到~",327,305+this.result.rows*30);
+					context.fillText("板板收到~",327,305+this.submitData.result.rows*30);
 					//小黑板头像绘制
-					this.drawCircle(context,463,302+this.result.rows*30,25,-(1 / 2 * Math.PI),-(1 / 2 * Math.PI),1);
+					this.drawCircle(context,463,302+this.submitData.result.rows*30,25,-(1 / 2 * Math.PI),-(1 / 2 * Math.PI),1);
 					context.draw();
 					
 			setTimeout(function () {
