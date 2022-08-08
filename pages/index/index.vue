@@ -72,12 +72,12 @@ export default {
 				},
 				//回复气泡
 				respondData:{
-					frameTopLeftX:'322',
-					frameTopLeftY:'270',
-					frameWidth:'110',
-					frameHeight:'60',
-					contentTopLeftX:'327',
-					contentTopLeftY:'305',
+					frameTopLeftX:322,
+					frameTopLeftY:270,
+					frameWidth:110,
+					frameHeight:60,
+					contentTopLeftX:327,
+					contentTopLeftY:305,
 					radius:10 ,//圆角
 					fillColor:'rgb(0,153,255)'
 				},
@@ -111,10 +111,8 @@ export default {
 			//得到需要增加的画布高度
 			updateHeight+=this.submitData.results[i].rows*30
 		}
-		console.log("this.submitData.results",this.submitData.results)
 		//修改画布高度
 		this.submitData.DrawHeight=450-30+updateHeight;
-		console.log(this.submitData.DrawHeight)
 		//字符串拼接得到最终画布高度
 		this.firstCanvas.minHeight=this.submitData.DrawHeight+"px"
 		
@@ -165,9 +163,6 @@ export default {
 					var countRow=0;
 					for (var i = 0; i < this.submitData.txt.length; i++) {
 						
-						console.log("length", this.submitData.txt.length)
-						console.log(i,this.submitData.results[i].rows)
-						
 						//设置气泡的宽度
 						resWitchList[i]=this.submitData.frameWidth
 						//如果文字只占一行，则根据文字长度动态设置宽度
@@ -194,7 +189,7 @@ export default {
 						countRow+=this.submitData.results[i].rows;
 					}
 					
-					console.log("countRow",countRow)
+				
 					context.save();
 					context.restore();
 					//小黑板气泡绘制
@@ -205,8 +200,7 @@ export default {
 					context.restore();
 					//小黑板头像绘制
 					//
-					this.drawCircle(context,this.headshotData.xhbUrl,463,302+countRow*30,25,-(1 / 2 * Math.PI),-(1 / 2 * Math.PI),1);
-					context.drawImage()
+					this.drawCircle(context,this.headshotData.xhbUrl,463,302+countRow*30,30,-(1 / 2 * Math.PI),-(1 / 2 * Math.PI),1);
 					context.draw();
 					
 			setTimeout(function () {
@@ -235,14 +229,14 @@ export default {
 			uni.canvasToTempFilePath({
 			  // x: 100,起始点
 			  // y: 200,结束点
-			 width:500,
-			 height:this.DrawHeight,
-			 destWidth: 1000,
-			   destHeight: 1000,
+			 //width:500,
+			 //height:this.submitData.DrawHeight,
+			 //destWidth: 1000,
+			   //destHeight: 1000,
 			  canvasId: 'firstCanvas',
 			  success: function(res) {
 			    // 在H5平台下，tempFilePath 为 base64
-			    console.log(res.tempFilePath)
+			 
 				urls.push(res.tempFilePath);
 				uni.previewImage({
 						current:0,
@@ -261,13 +255,25 @@ export default {
 			})
 			
 		},
+		//绘制圆形头像
+		/**该方法用来绘制一个有填充色的圆角矩形
+		     *@param cxt:canvas的上下文环境 
+			 * @param img:头像地址
+		     *@param x:圆心坐标 
+		     *@param y:圆心坐标 
+		     *@param cR:半径 
+		     *@param startAngle:起始角
+		     *@param tmpAngle:结束角 
+		     *@param lineWidth:线条颜色
+		     **/
 		drawCircle(cxt,img,x,y,cR,startAngle,tmpAngle,lineWidth){
 			 cxt.beginPath();
 			    cxt.lineWidth = lineWidth;
-			    cxt.strokeStyle = '#FFFFFF';
+			    cxt.strokeStyle = '#ffffff';
 			    cxt.arc(x, y, cR, startAngle, tmpAngle);
-			    cxt.stroke();
-				cxt.drawImage(img, x, y, cR*2, cR*2);
+				cxt.clip();
+				cxt.drawImage(img, x-cR, y-cR, cR*2, cR*2);
+				 cxt.stroke();
 		},
 		/**该方法用来绘制一个有填充色的圆角矩形 
 		     *@param cxt:canvas的上下文环境 
